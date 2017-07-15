@@ -5,7 +5,7 @@ from rest_framework.serializers import (ModelSerializer,
                                         )
 
 from blog.models import Post
-from comments.api.serializers import CommentListSerializer
+from comments.api.serializers import CommentListSerializer, CommentDetailSerializer
 from comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from accounts.api.serializers import UserDetailSerializer
@@ -40,35 +40,42 @@ class PostListSerializer(ModelSerializer):
         ]
 
 
-class PostDetailSerializer(ModelSerializer):
-    comments = SerializerMethodField()
-    user = UserDetailSerializer(read_only=True)
-    image = SerializerMethodField()
-    delete_url = HyperlinkedIdentityField(
-        view_name='posts-api:delete',
-        lookup_field='pk',
-    )
+def post_detail_serializer(request):
 
-    class Meta:
-        model = Post
-        fields = [
-            'delete_url',
-            'title',
-            'text',
-            'user',
-            'published_date',
-            'image',
-            'comments',
-        ]
+    class PostDetailSerializer(ModelSerializer):
+        comments = SerializerMethodField()
+        user = UserDetailSerializer(read_only=True)
+        image = SerializerMethodField()
+        delete_url = HyperlinkedIdentityField(
+            view_name='posts-api:delete',
+            lookup_field='pk',
+        )
 
-    def get_image(self, obj):
-        try:
-            image = obj.image.url
-        except:
-            image = None
-        return image
+        class Meta:
+            model = Post
+            fields = [
+                'delete_url',
+                'title',
+                'text',
+                'user',
+                'published_date',
+                'image',
+                'comments',
+            ]
 
-    def get_comments(self, obj):
-        c_qs = Comment.objects.filter_by_instance(obj)
-        comments = CommentListSerializer(c_qs, many=True).data
-        return comments
+        def get_image(self, obj):
+            try:
+                image = obj.image.url
+            except:
+                image = None
+            return image
+
+        def get_comments(self, obj):
+            c_qs = Comment.objects.filter_by_instance(obj)
+            comments = CommentListSerializer(
+                c_qs, 
+                many=True,
+                context={'request': request}
+            ).data
+            return comments
+    return PostDetailSerializer

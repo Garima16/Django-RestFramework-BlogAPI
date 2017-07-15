@@ -71,10 +71,10 @@ def create_comment_serializer(model_type='post', object_id=None, parent_id=None,
 
 
 class CommentListSerializer(ModelSerializer):
-    # url = HyperlinkedIdentityField(
-    #     view_name='comments-api:thread',
-    #     lookup_field='pk'
-    # )
+    url = HyperlinkedIdentityField(
+        view_name='comments-api:thread',
+        lookup_field='pk'
+    )
     reply_count = SerializerMethodField()
     user = UserDetailSerializer(read_only=True)
 
@@ -82,7 +82,7 @@ class CommentListSerializer(ModelSerializer):
         model = Comment
         fields = [
             'id',
-            # 'url',
+            'url',
             'user',
             # 'content_type',
             # 'object_id',

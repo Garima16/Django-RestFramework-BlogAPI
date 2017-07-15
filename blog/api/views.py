@@ -8,8 +8,9 @@ from rest_framework.generics import (
 )
 from .serializers import (
     PostListSerializer,
-    PostDetailSerializer,
+    # PostDetailSerializer,
     PostCreateSerializer,
+    post_detail_serializer
     # CommentListSerializer
 )
 
@@ -52,8 +53,11 @@ class PostListAPIView(ListAPIView):
 
 class PostDetailAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostDetailSerializer
+    # serializer_class = PostDetailSerializer
     permission_classes = [AllowAny]
+    
+    def get_serializer_class(self):
+        return post_detail_serializer(self.request)
 
 
 class PostUpdateAPIView(RetrieveUpdateAPIView):
