@@ -1,0 +1,9 @@
+curl -X POST -d "username=garima&password=blog@123" http://127.0.0.1:8000/api/token/auth/
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdhcmltYSIsInVzZXJfaWQiOjEsImVtYWlsIjoiIiwiZXhwIjoxNTAwMTEyNzU3fQ.wNQIohit4ncnrnj_1fL8h6HQYkDdvn3L17atZ4nv18s
+
+curl -H "Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdhcmltYSIsInVzZXJfaWQiOjEsImVtYWlsIjoiIiwiZXhwIjoxNTAwMTEzMzQ5fQ.GySSDRdi6p0KgEhk4-KHov0FNRxxgYxoh4pqzvUF55Y"
+http://127.0.0.1:8000/api/comments
+
+curl -X POST -H "Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdhcmltYSIsInVzZXJfaWQiOjEsImVtYWlsIjoiIiwiZXhwIjoxNTAwMTE0NzUxfQ.DIqteGou7uC2tK-lwx1j69SXm4uuNPq5njO6tnlo_EI" -H "Content-Type: application/json" -d '{"content":"new comment"}' 'http://127.0.0.1:8000/api/comments/create/?object_id=3&type=post'
+
